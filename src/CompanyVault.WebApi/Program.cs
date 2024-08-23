@@ -46,3 +46,6 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.MapControllers();
 app.Run();
+
+// This declaration is required for integration tests.
+public partial class Program { }
