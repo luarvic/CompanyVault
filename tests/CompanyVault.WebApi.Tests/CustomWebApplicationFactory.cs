@@ -15,25 +15,26 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Development");
         builder.ConfigureServices(services =>
         {
-            // Replace DB context with SQLite.
-            var dbContextOptionsDescriptor = services.Single(
-                s => s.ServiceType ==
+            var dbContextDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
                     typeof(DbContextOptions<CompanyVaultDbContext>));
-            services.Remove(dbContextOptionsDescriptor);
 
-            var dbContextDescriptor = services.Single(
-                s => s.ServiceType ==
-                    typeof(CompanyVaultDbContext));
-            services.Remove(dbContextDescriptor);
+            if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
+
+            var dbConnectionDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                    typeof(DbConnection));
+
+            if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
 
             // Create open SqliteConnection so EF won't automatically close it.
             services.AddSingleton<DbConnection>(container =>
             {
                 var connection = new SqliteConnection("DataSource=:memory:");
                 connection.Open();
+
                 return connection;
             });
 
@@ -43,5 +44,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
                 options.UseSqlite(connection);
             });
         });
+
+        builder.UseEnvironment("Test");
     }
 }

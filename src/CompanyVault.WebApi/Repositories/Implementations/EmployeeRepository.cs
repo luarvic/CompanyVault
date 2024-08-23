@@ -27,12 +27,8 @@ public class EmployeeRepository(CompanyVaultDbContext dbContext) : IEmployeeRepo
         var manager = employee.Manager;
         while (manager != null)
         {
-            manager = await dbContext
-                .Employees
-                .Include(e => e.Manager)
-                .Where(e => e == manager)
-                .SingleAsync(cancellationToken);
             managers.Add(manager);
+            dbContext.Entry(manager).Reference(m => m.Manager).Load();
             manager = manager.Manager;
         }
 
