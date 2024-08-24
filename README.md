@@ -70,7 +70,7 @@ Make sure you see a page with `Swagger UI` title.
 
 ## How to Run Tests
 
-#### 1. Navigate to the Service Source Directory
+#### 1. Navigate to the Service Tests Directory
 
 Run in terminal:
 
@@ -85,6 +85,8 @@ Run in terminal:
 ```bash
 dotnet test
 ```
+
+Make sure you see `Passed!`.
 
 ## Architecture and Design Decisions
 
