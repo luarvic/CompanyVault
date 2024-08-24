@@ -104,7 +104,7 @@ Make sure you see `Passed!`.
     - `Services` contains classes that implement business logic, e.g. mapping CSV data to DTOs, and DTOs to entities
 - `tests` contains unit and integration tests
   - `CompanyVault.WebApi.Tests` contains the test project
-    - `IntegrationTests` contains classes that test endpoints by sending HTTP request to the service with mocked infrastructure, i.e. database
+    - `IntegrationTests` contains classes that test endpoints by sending HTTP requests to the service with mocked infrastructure, i.e. database
     - `UnitTests` contains classes that test the services
 
 ### Dependencies
