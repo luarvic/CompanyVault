@@ -1,0 +1,30 @@
+name: Build
+on:
+  push:
+    branches:
+      - "**"
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src/CompanyVault.WebApi
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        dotnet-version: [8.0.x]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build
+      - name: Test
+        run: dotnet test
+        working-directory: ./tests/CompanyVault.WebApi.Tests
