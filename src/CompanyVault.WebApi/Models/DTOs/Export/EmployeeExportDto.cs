@@ -7,7 +7,7 @@ namespace CompanyVault.WebApi.Models.DTOs.Export
     {
         public required string Email { get; set; }
         public required string Department { get; set; }
-        public required DateOnly HireDate { get; set; }
+        public DateOnly? HireDate { get; set; }
         // Ordered ascending by seniority (i.e. the immediate manager first).
         public List<EmployeeHeaderExportDto>? Managers { get; set; }
     }

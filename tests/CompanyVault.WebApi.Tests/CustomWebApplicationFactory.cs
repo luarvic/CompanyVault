@@ -17,24 +17,21 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
     {
         builder.ConfigureServices(services =>
         {
-            var dbContextDescriptor = services.SingleOrDefault(
+            var dbContextOptionsDescriptor = services.Single(
                 d => d.ServiceType ==
                     typeof(DbContextOptions<CompanyVaultDbContext>));
+            services.Remove(dbContextOptionsDescriptor);
 
-            if (dbContextDescriptor != null) services.Remove(dbContextDescriptor);
-
-            var dbConnectionDescriptor = services.SingleOrDefault(
+            var dbContextDescriptor = services.Single(
                 d => d.ServiceType ==
-                    typeof(DbConnection));
-
-            if (dbConnectionDescriptor != null) services.Remove(dbConnectionDescriptor);
+                    typeof(CompanyVaultDbContext));
+            services.Remove(dbContextDescriptor);
 
             // Create open SqliteConnection so EF won't automatically close it.
             services.AddSingleton<DbConnection>(container =>
             {
                 var connection = new SqliteConnection("DataSource=:memory:");
                 connection.Open();
-
                 return connection;
             });
 

@@ -42,7 +42,7 @@ public class CompanyRepository(CompanyVaultDbContext dbContext) : ICompanyReposi
                     FullName = $"{e.FirstName} {e.LastName}"
                 }).ToList()
             })
-            .SingleAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
     }
 
     public async Task RemoveAsync(CancellationToken cancellationToken)

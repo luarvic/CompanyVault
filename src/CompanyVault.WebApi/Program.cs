@@ -8,6 +8,9 @@ using CompanyVault.WebApi.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
+const string AppSettingsSectionDatabaseName = "Database:Name";
+const string AppSettingsSectionEntityFrameworkLogLevel = "Logging:LogLevel:Microsoft.EntityFrameworkCore";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,7 +24,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ICsvParserService, CsvParserService>();
 builder.Services.AddScoped<IEmployeeMapperService, EmployeeMapperService>();
-builder.Services.AddDbContext<CompanyVaultDbContext>();
+builder.Services.AddDbContext<CompanyVaultDbContext>(options =>
+    {
+        options.UseSqlite($"Data Source={builder.Configuration.GetSection(AppSettingsSectionDatabaseName).Get<string>()}");
+        options.LogTo(Console.WriteLine,
+            builder.Configuration.GetSection(AppSettingsSectionEntityFrameworkLogLevel).Get<LogLevel>());
+    });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
@@ -30,8 +38,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<CompanyVaultDbContext>();
-    db.Database.EnsureCreated();
-    db.Database.Migrate();
+    if (app.Environment.EnvironmentName == "Test")
+    {
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+    }
+    else
+    {
+        db.Database.Migrate();
+    }
 }
 
 // Configure the HTTP request pipeline.

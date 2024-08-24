@@ -21,7 +21,7 @@ public class EmployeeRepository(CompanyVaultDbContext dbContext) : IEmployeeRepo
             .Include(e => e.Department)
             .Include(e => e.Manager)
             .Where(e => e.Number == number && e.Department.Company.Id == companyId)
-            .SingleAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
 
         var managers = new List<Employee>();
         var manager = employee.Manager;
