@@ -1,13 +1,17 @@
+# CompanyVault
+
 ![Dev build status](https://github.com/luarvic/CompanyVault/actions/workflows/build.yml/badge.svg)
 
-# Table of Contents
+A .NET Web API service for storing and managing employee data.
+
+## Table of Contents
 
 1. [CompanyVault specification.](#companyvault-specification)
 1. [How to run locally.](#how-to-run-locally)
 1. [How to run tests.](#how-to-run-tests)
 1. [Architecture and design decisions.](#architecture-and-design-decisions)
 
-# CompanyVault Specification
+## CompanyVault Specification
 
 CompanyVault is a web API microservice for storing and managing employee data.
 
@@ -16,9 +20,9 @@ It allows you to:
 - Upload employee data in CSV format (a [sample](./data/testing-data.csv)).
 - Retrieve employee and company data with the endpoints defined in the [specification](./docs/requirements.pdf).
 
-# How to Run Locally
+## How to Run Locally
 
-## Prerequisites
+### Prerequisites
 
 - You have installed a [Git client](https://git-scm.com/downloads).
 - You have installed [.NET](https://dotnet.microsoft.com/en-us/download) version `8.0.x` or later.
@@ -30,9 +34,9 @@ git --version
 dotnet --version
 ```
 
-## Getting Started
+### Getting Started
 
-### 1. Clone the Repository
+#### 1. Clone the Repository
 
 Run in terminal:
 
@@ -40,7 +44,7 @@ Run in terminal:
 git clone git@github.com:luarvic/CompanyVault.git
 ```
 
-### 2. Navigate to the Service Source Directory
+#### 2. Navigate to the Service Source Directory
 
 Run in terminal:
 
@@ -48,7 +52,7 @@ Run in terminal:
 cd CompanyVault/src/CompanyVault.WebApi
 ```
 
-### 3. Run the Service
+#### 3. Run the Service
 
 Run in terminal:
 
@@ -58,15 +62,15 @@ dotnet run
 
 Make sure you see `Application started. Press Ctrl+C to shut down.` in the terminal window.
 
-### 4. Verify Running Service
+#### 4. Verify Running Service
 
 Open [http://localhost:5068/swagger](http://localhost:5068/swagger) in web browser.
 
 Make sure you see a page with `Swagger UI` title.
 
-# How to Run Tests
+## How to Run Tests
 
-### 1. Navigate to the Service Source Directory
+#### 1. Navigate to the Service Source Directory
 
 Run in terminal:
 
@@ -74,7 +78,7 @@ Run in terminal:
 cd CompanyVault/tests/CompanyVault.WebApi.Tests
 ```
 
-### 2. Run the Tests
+#### 2. Run the Tests
 
 Run in terminal:
 
@@ -82,9 +86,9 @@ Run in terminal:
 dotnet test
 ```
 
-# Architecture and Design Decisions
+## Architecture and Design Decisions
 
-## Folders Structure
+### Folders Structure
 
 - `data` contains data samples
 - `docs` contains requirements
@@ -103,9 +107,9 @@ dotnet test
     - `IntegrationTests` contains classes that test endpoints by sending HTTP request to the service with mocked infrastructure, i.e. database
     - `UnitTests` contains classes that test the services
 
-## Dependencies
+### Dependencies
 
-### `CompanyVault.WebApi` Dependencies
+#### `CompanyVault.WebApi` Dependencies
 
 Among other things, `CompanyVault.WebApi` project depends on the following NuGet packages:
 
@@ -113,7 +117,7 @@ Among other things, `CompanyVault.WebApi` project depends on the following NuGet
 - [AutoMapper](https://www.nuget.org/packages/automapper/) simplifies objects mapping.
 - [Microsoft.EntityFrameworkCore.Sqlite](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite) enables SQLite database in Entity Framework.
 
-### `CompanyVault.WebApi.Tests` Dependencies
+#### `CompanyVault.WebApi.Tests` Dependencies
 
 Among other things, `CompanyVault.WebApi.Tests` project depends on the following NuGet packages:
 
