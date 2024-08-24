@@ -13,9 +13,7 @@ A .NET Web API service for storing and managing employee data.
 
 ## CompanyVault Specification
 
-CompanyVault is a web API microservice for storing and managing employee data.
-
-It allows you to:
+CompanyVault is a web API service written with [ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet/apis) and [Entity Framework](https://learn.microsoft.com/en-us/ef/) that allows you to:
 
 - Upload employee data in CSV format (a [sample](./data/testing-data.csv)).
 - Retrieve employee and company data with the endpoints defined in the [specification](./docs/requirements.pdf).
