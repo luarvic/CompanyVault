@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 const string AppSettingsSectionDatabaseName = "Database:Name";
-const string AppSettingsSectionEntityFrameworkLogLevel = "Logging:LogLevel:Microsoft.EntityFrameworkCore";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +26,6 @@ builder.Services.AddScoped<IEmployeeMapperService, EmployeeMapperService>();
 builder.Services.AddDbContext<CompanyVaultDbContext>(options =>
     {
         options.UseSqlite($"Data Source={builder.Configuration.GetSection(AppSettingsSectionDatabaseName).Get<string>()}");
-        options.LogTo(Console.WriteLine,
-            builder.Configuration.GetSection(AppSettingsSectionEntityFrameworkLogLevel).Get<LogLevel>());
     });
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
