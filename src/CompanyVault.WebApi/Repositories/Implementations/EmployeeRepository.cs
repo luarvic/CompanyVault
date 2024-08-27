@@ -17,20 +17,41 @@ public class EmployeeRepository(CompanyVaultDbContext dbContext) : IEmployeeRepo
 
     public async Task<EmployeeExportDto> GetAsync(int companyId, string number, CancellationToken cancellationToken)
     {
+        const string query = """
+            WITH Managers(EmployeeId, ManagerId, EmployeeNumber, FullName, EmployeeLevel) AS
+            (
+                SELECT
+                    Id AS EmployeeId,
+                    ManagerId,
+                    Number AS EmployeeNumber,
+                    FirstName || ' ' || LastName AS FullName,
+                    0 AS EmployeeLevel
+                FROM Employees
+                WHERE
+                    Id = {0}
+                UNION ALL
+                SELECT
+                    e.Id AS EmployeeId,
+                    e.ManagerId,
+                    e.Number AS EmployeeNumber,
+                    e.FirstName || ' ' || e.LastName AS FullName,
+                    m.EmployeeLevel + 1
+                FROM Employees e
+                JOIN Managers m ON e.Id = m.ManagerId
+            )
+            SELECT EmployeeNumber, FullName
+            FROM Managers
+            ORDER BY EmployeeLevel ASC;
+            """;
+
         var employee = await dbContext.Employees
             .Include(e => e.Department)
-            .Include(e => e.Manager)
             .Where(e => e.Number == number && e.Department.Company.Id == companyId)
             .FirstAsync(cancellationToken);
 
-        var managers = new List<Employee>();
-        var manager = employee.Manager;
-        while (manager != null)
-        {
-            managers.Add(manager);
-            dbContext.Entry(manager).Reference(m => m.Manager).Load();
-            manager = manager.Manager;
-        }
+        var managers = employee.ManagerId == null
+        ? []
+        : dbContext.Database.SqlQueryRaw<EmployeeHeaderExportDto>(string.Format(query, employee.ManagerId)).ToList();
 
         return new EmployeeExportDto()
         {
@@ -39,11 +60,7 @@ public class EmployeeRepository(CompanyVaultDbContext dbContext) : IEmployeeRepo
             Email = employee.Email,
             Department = employee.Department.Name,
             HireDate = employee.HireDate,
-            Managers = managers.Select(m => new EmployeeHeaderExportDto
-            {
-                EmployeeNumber = m.Number,
-                FullName = $"{m.FirstName} {m.LastName}"
-            }).ToList()
+            Managers = managers
         };
     }
 }
