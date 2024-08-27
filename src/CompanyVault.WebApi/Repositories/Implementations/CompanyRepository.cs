@@ -47,22 +47,6 @@ public class CompanyRepository(CompanyVaultDbContext dbContext) : ICompanyReposi
 
     public async Task<CompanyExportDto> GetAsync(int id, CancellationToken cancellationToken)
     {
-        /// "Translating this query requires the SQL APPLY operation, which is not supported on SQLite."
-        // return await GetCompanyDepartmentPairs()
-        //     .GroupJoin(dbContext.Employees, cd => cd.Department!.Id, e => e.DepartmentId, (c, e) => new { Company = c.Company, Employees = e.Select(x => x) })
-        //     .Select(x => new CompanyExportDto
-        //     {
-        //         Id = x.Company.Id,
-        //         Code = x.Company.Code,
-        //         Description = x.Company.Description,
-        //         EmployeeCount = x.Employees.Count(),
-        //         Employees = x.Employees.Select(e => new EmployeeHeaderExportDto
-        //         {
-        //             EmployeeNumber = e.Number,
-        //             FullName = $"{e.FirstName} {e.LastName}"
-        //         }).ToList()
-        //     }).FirstAsync(x => x.Id == id, cancellationToken);
-
         return await GetCompanyEmployeePairs()
             .GroupBy(c => c.Company)
             .Select(g => new
