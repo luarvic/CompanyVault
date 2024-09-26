@@ -6,7 +6,7 @@ using CompanyVault.WebApi.Services.Abstractions;
 namespace CompanyVault.WebApi.Services.Implementations;
 
 /// <summary>
-/// Implement the employee mapper service that is responsible
+/// Implements the employee mapper service that is responsible
 /// for mapping raw EmployeeRawImportDto objects to Employee entities.
 /// </summary>
 public class EmployeeMapperService(IMapper mapper) : IEmployeeMapperService

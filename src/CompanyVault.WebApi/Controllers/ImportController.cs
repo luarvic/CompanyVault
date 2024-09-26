@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CompanyVault.WebApi.Controllers;
 
 /// <summary>
-/// Implement import endpoint that imports employee data from CSV.
+/// Implements import endpoint that imports employee data from CSV.
 /// </summary>
 [ApiController]
 [Route("/")]
