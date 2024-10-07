@@ -24,7 +24,7 @@ public class ExportController(IUnitOfWork unitOfWork) : ControllerBase
     }
 
     /// <summary>
-    /// Return company by its id.
+    /// Returns company by its id.
     /// </summary>
     /// <param name="companyId">Company id.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
